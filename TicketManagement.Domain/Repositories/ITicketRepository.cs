@@ -13,5 +13,6 @@ namespace TicketManagement.Domain.Repositories
         Task<Ticket> AddAsync(Claim claim);
         Task<Ticket?> GetByIdAsync(Guid claimId);
         Task<IEnumerable<Claim>> GetAllAsync();
+        Task<Claim> UpdateAsync(Claim claim);
     }
 }
