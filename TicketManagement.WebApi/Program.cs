@@ -1,4 +1,6 @@
 
+using TicketManagement.WebApi.Extensions;
+
 namespace TicketManagement.WebApi
 {
     public class Program
@@ -10,6 +12,10 @@ namespace TicketManagement.WebApi
             // Add services to the container.
 
             builder.Services.AddControllers();
+
+            // Registering Application and Infrastructure Services
+            builder.Services.AddServices(builder.Configuration);
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
