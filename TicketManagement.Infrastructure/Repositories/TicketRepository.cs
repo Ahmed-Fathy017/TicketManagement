@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TicketManagement.Domain.Entities.Tickets;
 using TicketManagement.Domain.Repositories;
+using TicketManagement.Domain.Repositories.Models;
 
 namespace TicketManagement.Infrastructure.Repositories
 {
@@ -18,24 +20,36 @@ namespace TicketManagement.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public Task<Ticket> AddAsync(Claim claim)
+        public async Task AddAsync(Ticket ticket)
         {
-            throw new NotImplementedException();
+            await _dbContext.Tickets.AddAsync(ticket);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Claim>> GetAllAsync()
+        public async Task<PaginatedResult<Ticket>> GetPaginatedListAsync(int pageNumber, int pageSize)
         {
-            throw new NotImplementedException();
+            int totalCount = await _dbContext.Tickets.CountAsync();
+
+            List<Ticket> result = await _dbContext.Tickets
+                .AsNoTracking()
+                .OrderByDescending(t => t.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PaginatedResult<Ticket>(result, totalCount);
         }
 
-        public Task<Ticket?> GetByIdAsync(Guid claimId)
+        public async Task<Ticket?> GetByIdAsync(Guid ticketId)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Tickets
+                .FirstOrDefaultAsync(t => t.Id == ticketId);
         }
 
-        public Task<Claim> UpdateAsync(Claim claim)
+        public async Task UpdateAsync(Ticket ticket)
         {
-            throw new NotImplementedException();
+            _dbContext.Tickets.Update(ticket);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

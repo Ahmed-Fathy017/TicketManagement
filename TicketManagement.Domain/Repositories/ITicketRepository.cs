@@ -5,14 +5,15 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using TicketManagement.Domain.Entities.Tickets;
+using TicketManagement.Domain.Repositories.Models;
 
 namespace TicketManagement.Domain.Repositories
 {
     public interface ITicketRepository
     {
-        Task<Ticket> AddAsync(Claim claim);
-        Task<Ticket?> GetByIdAsync(Guid claimId);
-        Task<IEnumerable<Claim>> GetAllAsync();
-        Task<Claim> UpdateAsync(Claim claim);
+        Task AddAsync(Ticket ticket);
+        Task<PaginatedResult<Ticket>> GetPaginatedListAsync(int pageNumber, int pageSize);
+        Task<Ticket?> GetByIdAsync(Guid ticketId);
+        Task UpdateAsync(Ticket claim);
     }
 }

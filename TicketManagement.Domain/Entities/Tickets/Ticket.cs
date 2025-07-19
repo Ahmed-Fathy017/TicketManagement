@@ -16,7 +16,7 @@ namespace TicketManagement.Domain.Entities.Tickets
         public DateTime CreatedAt { get; private set; }
         public bool IsHandled { get; private set; }
 
-        internal Ticket(string phoneNumber, string governorate, string district, string city, bool isHandled)
+        internal Ticket(string phoneNumber, string governorate, string district, string city)
         {
             Id = Guid.NewGuid();
             PhoneNumber = phoneNumber;
@@ -25,6 +25,14 @@ namespace TicketManagement.Domain.Entities.Tickets
             City = city;
             CreatedAt = DateTime.UtcNow;
             IsHandled = false;
+        }
+
+        private Ticket() 
+        {
+            PhoneNumber = default!;
+            Governorate = default!;
+            District = default!;
+            City = default!;
         }
 
         public void MarkAsHandled()
