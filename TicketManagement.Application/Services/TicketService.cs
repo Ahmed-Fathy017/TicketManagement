@@ -28,11 +28,14 @@ namespace TicketManagement.Application.Services
 
         public async Task<ServiceResult<Guid>> CreateTicketAsync(CreateTicketRequestDto requestDto)
         {
-            Ticket ticket = _ticketFactory.Create(requestDto.PhoneNumber, requestDto.Governorate, requestDto.District, requestDto.City);
+            var result = _ticketFactory.Create(requestDto.PhoneNumber, requestDto.Governorate, requestDto.District, requestDto.City);
 
-            await _ticketRepository.AddAsync(ticket);
+            if (!result.IsSuccess)
+                return new ServiceResult<Guid>(ServiceResultStatus.ValidationError, Guid.Empty, result.Error);
 
-            return new (ServiceResultStatus.Success, ticket.Id, "Ticket created successfully");
+            await _ticketRepository.AddAsync(result.Value);
+
+            return new (ServiceResultStatus.Success, result.Value.Id, "Ticket created successfully");
         }
 
         public async Task<ServiceResult<GetPaginatedListResponseDto<Ticket>>> GetTicketsPaginatedListAsync(GetPaginatedListRequestDto requestDto)
