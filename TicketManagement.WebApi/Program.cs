@@ -7,7 +7,21 @@ namespace TicketManagement.WebApi
     {
         public static void Main(string[] args)
         {
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
             var builder = WebApplication.CreateBuilder(args);
+            var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  policy =>
+                                  {
+                                      policy.WithOrigins(allowedOrigins!)
+                                            .AllowAnyHeader()
+                                            .AllowAnyMethod();
+                                  });
+            });
 
             // Add services to the container.
 
@@ -21,6 +35,8 @@ namespace TicketManagement.WebApi
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

@@ -30,7 +30,7 @@ namespace TicketManagement.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTicketsPaginatedList(GetPaginatedListRequestDto request)
+        public async Task<IActionResult> GetTicketsPaginatedList([FromQuery] GetPaginatedListRequestDto request)
         {
             var result = await _mediator.Send(new GetTicketsPaginatedListQuery(request));
 

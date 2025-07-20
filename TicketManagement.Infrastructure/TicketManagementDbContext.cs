@@ -21,7 +21,6 @@ namespace TicketManagement.Infrastructure
         {
             base.OnModelCreating(builder);
 
-            builder.HasDefaultSchema("UserManagement");
             builder.ApplyConfigurationsFromAssembly(typeof(TicketManagementDbContext).Assembly);
         }
     }
