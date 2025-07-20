@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,9 +9,11 @@ export class SignalRService {
   private hubConnection!: signalR.HubConnection;
   private isConnected = false;
 
+  constructor(private configService: ConfigService) {}
+
   startConnection(): void {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:44308/hubs/dataChange', {
+      .withUrl(this.configService.signalRHubUrl, {
         skipNegotiation: true,
         transport: signalR.HttpTransportType.WebSockets
       })

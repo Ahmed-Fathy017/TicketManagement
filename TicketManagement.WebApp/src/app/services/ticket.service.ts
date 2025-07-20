@@ -8,14 +8,20 @@ import {
   PaginatedListResponse, 
   ServiceResult 
 } from '../models/ticket.interface';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TicketService {
-  private readonly baseUrl = 'https://localhost:44308/api/tickets'; // Adjust port as needed
+  private readonly baseUrl: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private configService: ConfigService
+  ) {
+    this.baseUrl = this.configService.ticketsApiUrl;
+  }
 
   createTicket(request: CreateTicketRequest): Observable<ServiceResult<string>> {
     return this.http.post<ServiceResult<string>>(`${this.baseUrl}`, request);
