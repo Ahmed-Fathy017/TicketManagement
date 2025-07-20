@@ -162,7 +162,7 @@
 }
 
 .tickets-table tbody tr:hover {
-  background: #f9f9f9;
+  background: #f9f9f9 !important;
 }
 
 .tickets-table tbody tr.handled {
@@ -467,30 +467,105 @@
   border-top: 1px solid #e0e0e0;
 }
 
-/* Time-based color coding with minimal styling */
-.tickets-table tbody tr[style*="background-color: #dc3545"] {
-  border-left: 4px solid #000000;
-  background: #ffffff !important;
+/* Status Legend */
+.status-legend {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.tickets-table tbody tr[style*="background-color: #007bff"] {
-  border-left: 4px solid #000000;
-  background: #ffffff !important;
+.status-legend h3 {
+  color: #000000;
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
-.tickets-table tbody tr[style*="background-color: #28a745"] {
-  border-left: 4px solid #000000;
-  background: #ffffff !important;
+.legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.tickets-table tbody tr[style*="background-color: #ffc107"] {
-  border-left: 4px solid #000000;
-  background: #ffffff !important;
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.tickets-table tbody tr[style*="background-color: #f8f9fa"] {
-  border-left: 4px solid #e0e0e0;
-  background: #ffffff !important;
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid #e0e0e0;
+}
+
+.legend-color.new {
+  background: #f8f9fa;
+}
+
+.legend-color.low-priority {
+  background: #ffc107;
+}
+
+.legend-color.medium-priority {
+  background: #28a745;
+}
+
+.legend-color.urgent {
+  background: #007bff;
+}
+
+.legend-color.handled {
+  background: #dc3545;
+}
+
+.legend-text {
+  font-size: 0.875rem;
+  color: #000000;
+  font-weight: 500;
+}
+
+/* Status Indicators */
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid #e0e0e0;
+}
+
+.status-dot.new {
+  background: #f8f9fa;
+}
+
+.status-dot.low-priority {
+  background: #ffc107;
+}
+
+.status-dot.medium-priority {
+  background: #28a745;
+}
+
+.status-dot.urgent {
+  background: #007bff;
+}
+
+.status-dot.handled {
+  background: #dc3545;
+}
+
+.status-text {
+  font-size: 0.875rem;
+  color: #000000;
+  font-weight: 500;
 }
 
 @media (max-width: 768px) {
@@ -521,6 +596,15 @@
   
   .add-icon {
     font-size: 1.5rem;
+  }
+  
+  .status-legend {
+    padding: 0.75rem;
+  }
+  
+  .legend-items {
+    flex-direction: column;
+    gap: 0.5rem;
   }
   
   .tickets-table {

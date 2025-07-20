@@ -175,6 +175,29 @@ export class TicketListComponent implements OnInit, OnDestroy {
     }
   }
 
+  getTimeBasedStatusClass(ticket: Ticket): string {
+    const timeStatus = this.ticketService.calculateTimeBasedStatus(ticket.createdAt);
+    
+    // If ticket is already handled, show as handled
+    if (ticket.isHandled) {
+      return 'handled';
+    }
+
+    // Apply time-based status
+    switch (timeStatus.color) {
+      case 'red':
+        return 'handled';
+      case 'blue':
+        return 'urgent';
+      case 'green':
+        return 'medium-priority';
+      case 'yellow':
+        return 'low-priority';
+      default:
+        return 'new';
+    }
+  }
+
   // Add Math reference for template
   protected readonly Math = Math;
 

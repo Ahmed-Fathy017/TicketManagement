@@ -17,6 +17,33 @@
     <span class="message-text">{{ message }}</span>
   </div>
 
+  <!-- Status Legend -->
+  <div class="status-legend">
+    <h3>Status Legend</h3>
+    <div class="legend-items">
+      <div class="legend-item">
+        <span class="legend-color new"></span>
+        <span class="legend-text">New (0-15 min)</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color low-priority"></span>
+        <span class="legend-text">Low Priority (15-30 min)</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color medium-priority"></span>
+        <span class="legend-text">Medium Priority (30-45 min)</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color urgent"></span>
+        <span class="legend-text">Urgent (45-60 min)</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color handled"></span>
+        <span class="legend-text">Handled 60+ minutes</span>
+      </div>
+    </div>
+  </div>
+
   <!-- Create Ticket Modal -->
   <div *ngIf="showCreateModal" class="modal-overlay" (click)="closeCreateModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
@@ -270,25 +297,24 @@
           <th>City</th>
           <th>District</th>
           <th>Created At</th>
-          <th>Status</th>
+          <th>Time Status</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let ticket of tickets" 
-            [ngClass]="{'handled': ticket.isHandled}"
-            [style.background-color]="getTimeBasedStatus(ticket).backgroundColor">
+            [ngClass]="{'handled': ticket.isHandled}">
           <td>{{ ticket.phoneNumber }}</td>
           <td>{{ ticket.governorate }}</td>
           <td>{{ ticket.city }}</td>
           <td>{{ ticket.district }}</td>
           <td>{{ formatDate(ticket.createdAt) }}</td>
           <td>
-            <span class="status-badge" 
-                  [style.background-color]="getTimeBasedStatus(ticket).backgroundColor"
-                  [style.color]="getTimeBasedStatus(ticket).color">
-              {{ getTimeBasedStatus(ticket).status }}
-            </span>
+            <div class="status-indicator">
+              <span class="status-dot" 
+                    [ngClass]="getTimeBasedStatusClass(ticket)"></span>
+              <span class="status-text">{{ getTimeBasedStatus(ticket).status }}</span>
+            </div>
           </td>
           <td>
             <button *ngIf="canHandleTicket(ticket)"
