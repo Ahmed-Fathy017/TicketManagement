@@ -72,7 +72,6 @@ export class TicketListComponent implements OnInit, OnDestroy {
         error: (error) => {
           this.isLoading = false;
           this.showMessage('An error occurred while loading tickets', 'error');
-          console.error('Error loading tickets:', error);
         }
       });
   }
@@ -221,7 +220,9 @@ export class TicketListComponent implements OnInit, OnDestroy {
   }
 
   formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleString();
+    // Parse the UTC date string and convert to local time
+    const utcDate = new Date(dateString + 'Z'); // Ensure it's treated as UTC
+    return utcDate.toLocaleString();
   }
 
   canHandleTicket(ticket: Ticket): boolean {
@@ -296,7 +297,6 @@ export class TicketListComponent implements OnInit, OnDestroy {
           error: (error) => {
             this.isSubmitting = false;
             this.showModalMessage('An error occurred while creating the ticket', 'error');
-            console.error('Error creating ticket:', error);
           }
         });
     } else {

@@ -35,12 +35,13 @@ export class TicketService {
 
   // Helper method to calculate time-based status
   calculateTimeBasedStatus(createdAt: string): { status: string; color: string } {
-    const created = new Date(createdAt);
+    // Parse UTC date and convert to local time for accurate calculation
+    const created = new Date(createdAt + 'Z'); // Ensure it's treated as UTC
     const now = new Date();
     const diffInMinutes = Math.floor((now.getTime() - created.getTime()) / (1000 * 60));
 
     if (diffInMinutes >= 60) {
-      return { status: 'Handled', color: 'red' };
+      return { status: '60+ minutes', color: 'red' };
     } else if (diffInMinutes >= 45) {
       return { status: 'Urgent', color: 'blue' };
     } else if (diffInMinutes >= 30) {
