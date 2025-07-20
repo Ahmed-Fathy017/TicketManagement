@@ -16,7 +16,8 @@ namespace TicketManagement.WebApi.Controllers
     public class TicketsController : BaseApiController
     {
         private readonly IMediator _mediator;
-        public TicketsController(IMediator mediator)
+
+        public TicketsController(IMediator mediator, ILoggerFactory loggerFactory) : base(loggerFactory)
         {
             _mediator = mediator;
         }
