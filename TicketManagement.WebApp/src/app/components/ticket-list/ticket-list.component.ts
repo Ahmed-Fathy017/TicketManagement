@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil, interval } from 'rxjs';
 import { TicketService } from '../../services/ticket.service';
-import { Ticket, PaginatedListRequest, CreateTicketRequest } from '../../models/ticket.interface';
+import { Ticket, PaginatedListRequest, CreateTicketRequest, ServiceResultStatus } from '../../models/ticket.interface';
 
 @Component({
   selector: 'app-ticket-list',
@@ -37,7 +37,7 @@ export class TicketListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initForm();
     this.loadTickets();
-    this.startAutoRefresh();
+    // this.startAutoRefresh();
   }
 
   ngOnDestroy(): void {
@@ -62,7 +62,7 @@ export class TicketListComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (result) => {
           this.isLoading = false;
-          if (result.status === 'Success' && result.data) {
+          if (result.status === ServiceResultStatus.Success && result.data) {
             this.tickets = result.data.items;
             this.totalCount = result.data.totalCount;
           } else {
@@ -93,7 +93,7 @@ export class TicketListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (result) => {
-          if (result.status === 'Success') {
+          if (result.status === ServiceResultStatus.Success) {
             // Update the ticket locally
             ticket.isHandled = true;
             this.showMessage('Ticket marked as handled successfully!', 'success');
@@ -210,12 +210,12 @@ export class TicketListComponent implements OnInit, OnDestroy {
     return timeStatus.color !== 'red'; // Don't allow handling if already "Handled" (60+ minutes)
   }
 
-  private startAutoRefresh(): void {
-    // Refresh every 30 seconds to update time-based statuses
-    this.refreshInterval = setInterval(() => {
-      this.loadTickets();
-    }, 30000);
-  }
+  // private startAutoRefresh(): void {
+  //   // Refresh every 30 seconds to update time-based statuses
+  //   this.refreshInterval = setInterval(() => {
+  //     this.loadTickets();
+  //   }, 30000);
+  // }
 
   initForm(): void {
     this.createForm = this.fb.group({
@@ -257,7 +257,7 @@ export class TicketListComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (result) => {
             this.isSubmitting = false;
-            if (result.status === 'Success') {
+            if (result.status === ServiceResultStatus.Success) {
               this.showModalMessage('Ticket created successfully!', 'success');
               this.createForm.reset();
               

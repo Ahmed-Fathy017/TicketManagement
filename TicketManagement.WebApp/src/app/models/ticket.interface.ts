@@ -26,7 +26,15 @@ export interface PaginatedListResponse<T> {
 }
 
 export interface ServiceResult<T> {
-  status: 'Success' | 'Failure' | 'NotFound' | 'ValidationError';
+  status: number; // 0=Success, 1=Failure, 2=NotFound, 3=ValidationError
   data: T;
   message: string | null;
-} 
+}
+
+// Service Result Status Constants
+export const ServiceResultStatus = {
+  Success: 0,
+  Failure: 1,
+  NotFound: 2,
+  ValidationError: 3
+} as const; 

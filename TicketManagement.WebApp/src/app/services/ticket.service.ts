@@ -13,7 +13,7 @@ import {
   providedIn: 'root'
 })
 export class TicketService {
-  private readonly baseUrl = 'https://localhost:7001/api/tickets'; // Adjust port as needed
+  private readonly baseUrl = 'https://localhost:44308/api/tickets'; // Adjust port as needed
 
   constructor(private http: HttpClient) { }
 
