@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagement.WebApi", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagement.Tests", "TicketManagement.Tests\TicketManagement.Tests.csproj", "{4378B4D1-A674-4D16-8A87-A026E3E285B5}"
 EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "TicketManagement.WebApp", "TicketManagement.WebApp\TicketManagement.WebApp.esproj", "{23954766-8902-FF16-4D69-1FBFC8696AEB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,12 @@ Global
 		{4378B4D1-A674-4D16-8A87-A026E3E285B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4378B4D1-A674-4D16-8A87-A026E3E285B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4378B4D1-A674-4D16-8A87-A026E3E285B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23954766-8902-FF16-4D69-1FBFC8696AEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23954766-8902-FF16-4D69-1FBFC8696AEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23954766-8902-FF16-4D69-1FBFC8696AEB}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{23954766-8902-FF16-4D69-1FBFC8696AEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23954766-8902-FF16-4D69-1FBFC8696AEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23954766-8902-FF16-4D69-1FBFC8696AEB}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

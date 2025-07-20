@@ -1,0 +1,109 @@
+<div class="container">
+  <div class="form-container">
+    <div class="form-header">
+      <button 
+        type="button" 
+        (click)="onAddClick($event)"
+        class="btn btn-link back-btn"
+        title="Back to Tickets"
+      >
+        ← Back to Tickets
+      </button>
+      <h2>Create New Ticket</h2>
+    </div>
+    
+    <!-- Success/Error Messages -->
+    <div *ngIf="message" class="message" [ngClass]="messageType">
+      {{ message }}
+    </div>
+
+    <form [formGroup]="ticketForm" (ngSubmit)="onSubmit()" class="ticket-form">
+      <!-- Phone Number -->
+      <div class="form-group">
+        <label for="phoneNumber">Phone Number *</label>
+        <input 
+          type="text" 
+          id="phoneNumber"
+          formControlName="phoneNumber"
+          placeholder="Enter phone number"
+          class="form-control"
+          [ngClass]="{'error': ticketForm.get('phoneNumber')?.invalid && ticketForm.get('phoneNumber')?.touched}"
+        >
+        <div *ngIf="getErrorMessage('phoneNumber')" class="error-message">
+          {{ getErrorMessage('phoneNumber') }}
+        </div>
+      </div>
+
+      <!-- Governorate -->
+      <div class="form-group">
+        <label for="governorate">Governorate *</label>
+        <select 
+          id="governorate"
+          formControlName="governorate"
+          class="form-control"
+          [ngClass]="{'error': ticketForm.get('governorate')?.invalid && ticketForm.get('governorate')?.touched}"
+        >
+          <option value="">Select Governorate</option>
+          <option *ngFor="let gov of governorates" [value]="gov">{{ gov }}</option>
+        </select>
+        <div *ngIf="getErrorMessage('governorate')" class="error-message">
+          {{ getErrorMessage('governorate') }}
+        </div>
+      </div>
+
+      <!-- City -->
+      <div class="form-group">
+        <label for="city">City *</label>
+        <select 
+          id="city"
+          formControlName="city"
+          class="form-control"
+          [ngClass]="{'error': ticketForm.get('city')?.invalid && ticketForm.get('city')?.touched}"
+        >
+          <option value="">Select City</option>
+          <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+        </select>
+        <div *ngIf="getErrorMessage('city')" class="error-message">
+          {{ getErrorMessage('city') }}
+        </div>
+      </div>
+
+      <!-- District -->
+      <div class="form-group">
+        <label for="district">District *</label>
+        <select 
+          id="district"
+          formControlName="district"
+          class="form-control"
+          [ngClass]="{'error': ticketForm.get('district')?.invalid && ticketForm.get('district')?.touched}"
+        >
+          <option value="">Select District</option>
+          <option *ngFor="let district of districts" [value]="district">{{ district }}</option>
+        </select>
+        <div *ngIf="getErrorMessage('district')" class="error-message">
+          {{ getErrorMessage('district') }}
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          [disabled]="ticketForm.invalid || isLoading"
+          class="btn btn-primary"
+        >
+          <span *ngIf="isLoading">Creating...</span>
+          <span *ngIf="!isLoading">Create Ticket</span>
+        </button>
+        
+        <button 
+          type="button" 
+          (click)="onAddClick($event)"
+          class="btn btn-secondary"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div> 

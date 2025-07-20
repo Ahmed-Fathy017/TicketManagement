@@ -1,0 +1,372 @@
+<div class="container">
+  <div class="header">
+    <div class="title-section">
+      <h1 class="main-title">TICKET</h1>
+      <h1 class="main-title">MANAGEMENT</h1>
+      <h1 class="main-title underlined">SYSTEM</h1>
+    </div>
+    <button class="btn btn-primary add-btn" (click)="navigateToCreate()" title="Create New Ticket">
+      <span class="add-icon">+</span>
+      <span class="add-text">Add Ticket</span>
+    </button>
+  </div>
+
+  <!-- Success/Error Messages -->
+  <div *ngIf="message" class="message-toast" [ngClass]="messageType">
+    <span class="message-icon">{{ messageType === 'success' ? '✓' : '✕' }}</span>
+    <span class="message-text">{{ message }}</span>
+  </div>
+
+  <!-- Create Ticket Modal -->
+  <div *ngIf="showCreateModal" class="modal-overlay" (click)="closeCreateModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Create New Ticket</h2>
+        <button class="modal-close-btn" (click)="closeCreateModal()">×</button>
+      </div>
+      
+      <div class="modal-body">
+        <!-- Success/Error Messages -->
+        <div *ngIf="createMessage" class="message-toast" [ngClass]="createMessageType">
+          <span class="message-icon">{{ createMessageType === 'success' ? '✓' : '✕' }}</span>
+          <span class="message-text">{{ createMessage }}</span>
+        </div>
+
+        <form [formGroup]="createForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="phoneNumber">Phone Number *</label>
+            <input 
+              type="text" 
+              id="phoneNumber" 
+              formControlName="phoneNumber" 
+              class="form-control"
+              [ngClass]="{'error': isFieldInvalid('phoneNumber')}"
+              placeholder="Enter phone number">
+            <div *ngIf="isFieldInvalid('phoneNumber')" class="error-message">
+              {{ getFieldError('phoneNumber') }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="governorate">Governorate *</label>
+            <select 
+              id="governorate" 
+              formControlName="governorate" 
+              class="form-control"
+              [ngClass]="{'error': isFieldInvalid('governorate')}">
+              <option value="">Select Governorate</option>
+              <option value="Cairo">Cairo</option>
+              <option value="Alexandria">Alexandria</option>
+              <option value="Giza">Giza</option>
+              <option value="Qalyubia">Qalyubia</option>
+              <option value="Port Said">Port Said</option>
+              <option value="Suez">Suez</option>
+              <option value="Luxor">Luxor</option>
+              <option value="Aswan">Aswan</option>
+              <option value="Minya">Minya</option>
+              <option value="Assiut">Assiut</option>
+              <option value="Sohag">Sohag</option>
+              <option value="Qena">Qena</option>
+              <option value="Aswan">Aswan</option>
+              <option value="Red Sea">Red Sea</option>
+              <option value="New Valley">New Valley</option>
+              <option value="Matruh">Matruh</option>
+              <option value="North Sinai">North Sinai</option>
+              <option value="South Sinai">South Sinai</option>
+              <option value="Kafr El Sheikh">Kafr El Sheikh</option>
+              <option value="Gharbia">Gharbia</option>
+              <option value="Monufia">Monufia</option>
+              <option value="Beheira">Beheira</option>
+              <option value="Ismailia">Ismailia</option>
+              <option value="Damietta">Damietta</option>
+              <option value="Sharqia">Sharqia</option>
+              <option value="Dakahlia">Dakahlia</option>
+              <option value="Kafr El Sheikh">Kafr El Sheikh</option>
+              <option value="Beni Suef">Beni Suef</option>
+              <option value="Fayoum">Fayoum</option>
+              <option value="Asyut">Asyut</option>
+              <option value="Sohag">Sohag</option>
+              <option value="Qena">Qena</option>
+              <option value="Luxor">Luxor</option>
+              <option value="Aswan">Aswan</option>
+              <option value="Red Sea">Red Sea</option>
+              <option value="New Valley">New Valley</option>
+              <option value="Matruh">Matruh</option>
+              <option value="North Sinai">North Sinai</option>
+              <option value="South Sinai">South Sinai</option>
+            </select>
+            <div *ngIf="isFieldInvalid('governorate')" class="error-message">
+              {{ getFieldError('governorate') }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="city">City *</label>
+            <select 
+              id="city" 
+              formControlName="city" 
+              class="form-control"
+              [ngClass]="{'error': isFieldInvalid('city')}">
+              <option value="">Select City</option>
+              <option value="Cairo">Cairo</option>
+              <option value="Giza">Giza</option>
+              <option value="Alexandria">Alexandria</option>
+              <option value="Sharm El Sheikh">Sharm El Sheikh</option>
+              <option value="Hurghada">Hurghada</option>
+              <option value="Luxor">Luxor</option>
+              <option value="Aswan">Aswan</option>
+              <option value="Port Said">Port Said</option>
+              <option value="Suez">Suez</option>
+              <option value="Ismailia">Ismailia</option>
+              <option value="Damietta">Damietta</option>
+              <option value="Zagazig">Zagazig</option>
+              <option value="Mansoura">Mansoura</option>
+              <option value="Tanta">Tanta</option>
+              <option value="Benha">Benha</option>
+              <option value="Shebin El Kom">Shebin El Kom</option>
+              <option value="Damanhur">Damanhur</option>
+              <option value="Kafr El Sheikh">Kafr El Sheikh</option>
+              <option value="Beni Suef">Beni Suef</option>
+              <option value="Fayoum">Fayoum</option>
+              <option value="Minya">Minya</option>
+              <option value="Assiut">Assiut</option>
+              <option value="Sohag">Sohag</option>
+              <option value="Qena">Qena</option>
+              <option value="Marsa Alam">Marsa Alam</option>
+              <option value="El Gouna">El Gouna</option>
+              <option value="Dahab">Dahab</option>
+              <option value="Nuweiba">Nuweiba</option>
+              <option value="Siwa">Siwa</option>
+              <option value="Bahariya">Bahariya</option>
+              <option value="Farafra">Farafra</option>
+              <option value="Dakhla">Dakhla</option>
+              <option value="Kharga">Kharga</option>
+              <option value="El Arish">El Arish</option>
+              <option value="Rafah">Rafah</option>
+              <option value="Sheikh Zuweid">Sheikh Zuweid</option>
+              <option value="Bir El Abd">Bir El Abd</option>
+              <option value="El Hasana">El Hasana</option>
+              <option value="Nakhl">Nakhl</option>
+              <option value="El Tor">El Tor</option>
+              <option value="Saint Catherine">Saint Catherine</option>
+              <option value="Dahab">Dahab</option>
+              <option value="Nuweiba">Nuweiba</option>
+              <option value="Taba">Taba</option>
+              <option value="Ras Sedr">Ras Sedr</option>
+              <option value="Abu Zenima">Abu Zenima</option>
+              <option value="Abu Rudais">Abu Rudais</option>
+              <option value="El Tur">El Tur</option>
+              <option value="Sharm El Sheikh">Sharm El Sheikh</option>
+              <option value="Ras Mohammed">Ras Mohammed</option>
+              <option value="Nabq">Nabq</option>
+              <option value="Tiran">Tiran</option>
+              <option value="Sanafir">Sanafir</option>
+            </select>
+            <div *ngIf="isFieldInvalid('city')" class="error-message">
+              {{ getFieldError('city') }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="district">District *</label>
+            <select 
+              id="district" 
+              formControlName="district" 
+              class="form-control"
+              [ngClass]="{'error': isFieldInvalid('district')}">
+              <option value="">Select District</option>
+              <option value="Downtown">Downtown</option>
+              <option value="Zamalek">Zamalek</option>
+              <option value="Heliopolis">Heliopolis</option>
+              <option value="Maadi">Maadi</option>
+              <option value="Nasr City">Nasr City</option>
+              <option value="6th of October">6th of October</option>
+              <option value="Sheikh Zayed">Sheikh Zayed</option>
+              <option value="New Cairo">New Cairo</option>
+              <option value="Shoubra">Shoubra</option>
+              <option value="Ain Shams">Ain Shams</option>
+              <option value="El Mokattam">El Mokattam</option>
+              <option value="El Basatin">El Basatin</option>
+              <option value="El Sayeda Zeinab">El Sayeda Zeinab</option>
+              <option value="El Khalifa">El Khalifa</option>
+              <option value="El Darb El Ahmar">El Darb El Ahmar</option>
+              <option value="El Gamaliya">El Gamaliya</option>
+              <option value="El Husseiniya">El Husseiniya</option>
+              <option value="El Shorouk">El Shorouk</option>
+              <option value="El Rehab">El Rehab</option>
+              <option value="El Tagammu">El Tagammu</option>
+              <option value="El Nozha">El Nozha</option>
+              <option value="El Sharabiya">El Sharabiya</option>
+              <option value="El Salam">El Salam</option>
+              <option value="El Marg">El Marg</option>
+              <option value="El Matareya">El Matareya</option>
+              <option value="El Zeitoun">El Zeitoun</option>
+              <option value="El Mokattam">El Mokattam</option>
+              <option value="El Basatin">El Basatin</option>
+              <option value="El Sayeda Zeinab">El Sayeda Zeinab</option>
+              <option value="El Khalifa">El Khalifa</option>
+              <option value="El Darb El Ahmar">El Darb El Ahmar</option>
+              <option value="El Gamaliya">El Gamaliya</option>
+              <option value="El Husseiniya">El Husseiniya</option>
+              <option value="El Shorouk">El Shorouk</option>
+              <option value="El Rehab">El Rehab</option>
+              <option value="El Tagammu">El Tagammu</option>
+              <option value="El Nozha">El Nozha</option>
+              <option value="El Sharabiya">El Sharabiya</option>
+              <option value="El Salam">El Salam</option>
+              <option value="El Marg">El Marg</option>
+              <option value="El Matareya">El Matareya</option>
+              <option value="El Zeitoun">El Zeitoun</option>
+              <option value="El Mokattam">El Mokattam</option>
+              <option value="El Basatin">El Basatin</option>
+              <option value="El Sayeda Zeinab">El Sayeda Zeinab</option>
+              <option value="El Khalifa">El Khalifa</option>
+              <option value="El Darb El Ahmar">El Darb El Ahmar</option>
+              <option value="El Gamaliya">El Gamaliya</option>
+              <option value="El Husseiniya">El Husseiniya</option>
+              <option value="El Shorouk">El Shorouk</option>
+              <option value="El Rehab">El Rehab</option>
+              <option value="El Tagammu">El Tagammu</option>
+              <option value="El Nozha">El Nozha</option>
+              <option value="El Sharabiya">El Sharabiya</option>
+              <option value="El Salam">El Salam</option>
+              <option value="El Marg">El Marg</option>
+              <option value="El Matareya">El Matareya</option>
+              <option value="El Zeitoun">El Zeitoun</option>
+            </select>
+            <div *ngIf="isFieldInvalid('district')" class="error-message">
+              {{ getFieldError('district') }}
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" (click)="closeCreateModal()">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+              {{ isSubmitting ? 'Creating...' : 'Create Ticket' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading tickets...</p>
+  </div>
+
+  <!-- Tickets Table -->
+  <div *ngIf="!isLoading" class="table-container">
+    <table class="tickets-table">
+      <thead>
+        <tr>
+          <th>Phone Number</th>
+          <th>Governorate</th>
+          <th>City</th>
+          <th>District</th>
+          <th>Created At</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ticket of tickets" 
+            [ngClass]="{'handled': ticket.isHandled}"
+            [style.background-color]="getTimeBasedStatus(ticket).backgroundColor">
+          <td>{{ ticket.phoneNumber }}</td>
+          <td>{{ ticket.governorate }}</td>
+          <td>{{ ticket.city }}</td>
+          <td>{{ ticket.district }}</td>
+          <td>{{ formatDate(ticket.createdAt) }}</td>
+          <td>
+            <span class="status-badge" 
+                  [style.background-color]="getTimeBasedStatus(ticket).backgroundColor"
+                  [style.color]="getTimeBasedStatus(ticket).color">
+              {{ getTimeBasedStatus(ticket).status }}
+            </span>
+          </td>
+          <td>
+            <button *ngIf="canHandleTicket(ticket)"
+                    (click)="handleTicket(ticket)"
+                    class="btn btn-success btn-sm"
+                    [disabled]="ticket.isHandled">
+              Handle
+            </button>
+            <span *ngIf="!canHandleTicket(ticket)" class="handled-text">
+              {{ ticket.isHandled ? 'Handled' : 'Auto-Handled' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- No Tickets Message -->
+    <div *ngIf="tickets.length === 0" class="no-tickets">
+      <p>No tickets found.</p>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div *ngIf="!isLoading && tickets.length > 0" class="pagination">
+    <div class="pagination-info">
+      Page {{ currentPage }} of {{ getTotalPages() }} ({{ totalCount }} total tickets)
+    </div>
+    
+    <div class="pagination-controls">
+      <!-- Previous Button -->
+      <button 
+        (click)="onPageChange(currentPage - 1)"
+        [disabled]="currentPage === 1"
+        class="btn btn-secondary btn-sm">
+        Previous
+      </button>
+
+      <!-- Page Numbers -->
+      <div class="page-numbers">
+        <!-- First Page -->
+        <button 
+          *ngIf="currentPage > 3"
+          (click)="onPageChange(1)"
+          class="btn btn-sm page-btn">
+          1
+        </button>
+        
+        <!-- Ellipsis -->
+        <span *ngIf="currentPage > 4" class="page-ellipsis">...</span>
+        
+        <!-- Page Numbers -->
+        <button 
+          *ngFor="let page of getPageNumbers()"
+          (click)="onPageChange(page)"
+          [class.active]="page === currentPage"
+          class="btn btn-sm page-btn">
+          {{ page }}
+        </button>
+        
+        <!-- Ellipsis -->
+        <span *ngIf="currentPage < getTotalPages() - 3" class="page-ellipsis">...</span>
+        
+        <!-- Last Page -->
+        <button 
+          *ngIf="currentPage < getTotalPages() - 2"
+          (click)="onPageChange(getTotalPages())"
+          class="btn btn-sm page-btn">
+          {{ getTotalPages() }}
+        </button>
+      </div>
+
+      <!-- Next Button -->
+      <button 
+        (click)="onPageChange(currentPage + 1)"
+        [disabled]="currentPage >= getTotalPages()"
+        class="btn btn-secondary btn-sm">
+        Next
+      </button>
+    </div>
+  </div>
+</div> 
