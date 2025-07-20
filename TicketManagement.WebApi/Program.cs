@@ -1,5 +1,6 @@
 
 using TicketManagement.WebApi.Extensions;
+using TicketManagement.WebApi.Hubs;
 
 namespace TicketManagement.WebApi
 {
@@ -10,7 +11,10 @@ namespace TicketManagement.WebApi
             var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
             var builder = WebApplication.CreateBuilder(args);
+
             var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+
+            builder.Services.AddSignalR();
 
             builder.Services.AddCors(options =>
             {
@@ -19,7 +23,8 @@ namespace TicketManagement.WebApi
                                   {
                                       policy.WithOrigins(allowedOrigins!)
                                             .AllowAnyHeader()
-                                            .AllowAnyMethod();
+                                            .AllowAnyMethod()
+                                            .AllowCredentials();
                                   });
             });
 
@@ -36,8 +41,6 @@ namespace TicketManagement.WebApi
 
             var app = builder.Build();
 
-            app.UseCors(MyAllowSpecificOrigins);
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -47,8 +50,13 @@ namespace TicketManagement.WebApi
 
             app.UseHttpsRedirection();
 
+            // CORS must be before SignalR and Authorization
+            app.UseCors(MyAllowSpecificOrigins);
+
             app.UseAuthorization();
 
+            // Map SignalR hub
+            app.MapHub<DataChangeHub>("/hubs/dataChange");
 
             app.MapControllers();
 

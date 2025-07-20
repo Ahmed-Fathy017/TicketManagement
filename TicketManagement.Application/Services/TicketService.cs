@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using TicketManagement.Application.Commands.DTOs;
@@ -19,11 +20,13 @@ namespace TicketManagement.Application.Services
     {
         private readonly ITicketFactory _ticketFactory;
         private readonly ITicketRepository _ticketRepository;
+        private readonly INotificationService _notificationService;
 
-        public TicketService(ITicketFactory ticketFactory, ITicketRepository ticketRepository)
+        public TicketService(ITicketFactory ticketFactory, ITicketRepository ticketRepository, INotificationService notificationService)
         {
             _ticketFactory = ticketFactory;
             _ticketRepository = ticketRepository;
+            _notificationService = notificationService;
         }
 
         public async Task<ServiceResult<Guid>> CreateTicketAsync(CreateTicketRequestDto requestDto)
@@ -34,6 +37,8 @@ namespace TicketManagement.Application.Services
                 return new ServiceResult<Guid>(ServiceResultStatus.ValidationError, Guid.Empty, result.Error);
 
             await _ticketRepository.AddAsync(result.Value);
+
+            await _notificationService.NotifyTicketCreatedAsync(result.Value);
 
             return new (ServiceResultStatus.Success, result.Value.Id, "Ticket created successfully");
         }

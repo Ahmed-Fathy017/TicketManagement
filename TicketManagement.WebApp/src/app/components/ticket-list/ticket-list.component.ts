@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil, interval } from 'rxjs';
 import { TicketService } from '../../services/ticket.service';
 import { Ticket, PaginatedListRequest, CreateTicketRequest, ServiceResultStatus } from '../../models/ticket.interface';
+import { SignalRService } from '../../services/signal-r-service';
 
 @Component({
   selector: 'app-ticket-list',
@@ -31,13 +32,14 @@ export class TicketListComponent implements OnInit, OnDestroy {
 
   constructor(
     private ticketService: TicketService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private signalRService: SignalRService
   ) { }
 
   ngOnInit(): void {
     this.initForm();
     this.loadTickets();
-    // this.startAutoRefresh();
+    this.startSignalRConnection();
   }
 
   ngOnDestroy(): void {
@@ -234,12 +236,14 @@ export class TicketListComponent implements OnInit, OnDestroy {
     return timeStatus.color !== 'red'; // Don't allow handling if already "Handled" (60+ minutes)
   }
 
-  // private startAutoRefresh(): void {
-  //   // Refresh every 30 seconds to update time-based statuses
-  //   this.refreshInterval = setInterval(() => {
-  //     this.loadTickets();
-  //   }, 30000);
-  // }
+  private startSignalRConnection(): void {
+    this.signalRService.startConnection();
+    this.signalRService.onTicketCreated((ticket) => {
+      // Add the new ticket to the beginning of the list
+      this.tickets.unshift(ticket);
+      this.totalCount++;
+    });
+  }
 
   initForm(): void {
     this.createForm = this.fb.group({
@@ -285,10 +289,15 @@ export class TicketListComponent implements OnInit, OnDestroy {
               this.showModalMessage('Ticket created successfully!', 'success');
               this.createForm.reset();
               
-              // Close modal after 2 seconds and refresh the list
+              // Close modal after 2 seconds - SignalR will handle the real-time update
               setTimeout(() => {
                 this.closeCreateModal();
-                this.loadTickets();
+                
+                // Fallback: Refresh list if SignalR is not connected
+                if (!this.signalRService.isConnectionActive()) {
+                  console.log('SignalR not connected, refreshing list manually');
+                  this.loadTickets();
+                }
               }, 2000);
             } else {
               this.showModalMessage(result.message || 'Failed to create ticket', 'error');
